@@ -44,7 +44,6 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JLabel lblNewLabel;
 	private JPanel panel;
-	private JButton btnSalir;
 	private JLabel lblNewLabel_1;
 	private JPanel panel_1;
 	private JTabbedPane tabbedPane;
@@ -129,13 +128,9 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 			panel.setBackground(Color.ORANGE);
 			contentPane.add(panel);
 			{
-				btnSalir = new JButton("SALIR");
-				btnSalir.setBounds(27, 397, 142, 29);
-				panel.add(btnSalir);
-			}
-			{
 				btnDesarrolladores = new JButton("DESARROLLADORES");
-				btnDesarrolladores.setBounds(27, 357, 142, 29);
+				btnDesarrolladores.addActionListener(this);
+				btnDesarrolladores.setBounds(10, 405, 142, 29);
 				panel.add(btnDesarrolladores);
 			}
 		}
@@ -384,6 +379,9 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 	
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnDesarrolladores) {
+			do_btnDesarrolladores_actionPerformed(e);
+		}
 		if (e.getSource() == txtCantidadV) {
 			do_txtCantidadV_actionPerformed(e);
 		}
@@ -620,4 +618,9 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 	    }
 	}
 	
+	protected void do_btnDesarrolladores_actionPerformed(ActionEvent e) {
+		Programadores p1 = new Programadores();
+		p1.setVisible(true);
+		this.setVisible(false);
+	}
 }

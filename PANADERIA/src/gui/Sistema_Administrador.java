@@ -7,10 +7,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import COMPRAS.ArrayCompraInsumos;
 import COMPRAS.ArrayComprasProductos;
+import COMPRAS.ComprasInsumos;
 import COMPRAS.ComprasProductos;
 import EMPLEADOS.ArrayEmpleados;
 import EMPLEADOS.Empleados;
+import INSUMOS.ArrayInsumos;
+import INSUMOS.Insumos;
 import PRODUCTOS.ArrayProductos;
 import PRODUCTOS.Productos;
 import PROVEEDORES.ArrayProveedor;
@@ -45,7 +49,6 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 	private JPanel contentPane;
 	private JLabel lblAdministrador;
 	private JPanel panel;
-	private JButton btnSalir;
 	private JPanel panel_1;
 	private JTabbedPane tabbedPane;
 	private JPanel panel_2;
@@ -116,6 +119,42 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 	private JButton btnBuscarComP;
 	private JLabel lblNewLabel_11;
 	private JButton btnBuscarProducto;
+	private JPanel panel_6;
+	private JTextField txtStockINS;
+	private JLabel lblNewLabel_1;
+	private JTextField txtNomInsumo;
+	private JLabel lblNewLabel_19;
+	private JButton btnAgregarInsumo;
+	private JButton btnModificarInsumo;
+	private JButton btnEliminarInsumo;
+	private JTextField txtDescripcionInsumo;
+	private JLabel lblNewLabel_25;
+	private JButton btnBuscarInsumo;
+	private JScrollPane scrollPane_1;
+	private JTable table_3;
+	private JPanel panel_7;
+	private JLabel lblNewLabel_26;
+	private JLabel lblNewLabel_27;
+	private JTextField txtNOMINSUMO;
+	private JTextField txtPRECOMPRAINS;
+	private JButton btnRegistrarComprasInsumo;
+	private JButton btnModificarCompraInsumo;
+	private JLabel lblNewLabel_28;
+	private JLabel lblNewLabel_29;
+	private JTextField txtDESINSUMO;
+	private JTextField txtCANTIDAD;
+	private JLabel lblNewLabel_30;
+	private JLabel lblNewLabel_31;
+	private JComboBox<String> cmbProveedorINS;
+	private JComboBox<String> cmbEmpleadoINS;
+	private JButton btnEliminarCompraInsumo;
+	private JButton btnBuscarCompraInsumo;
+	private JScrollPane scrollPane_2;
+	private JTextField txtNOMEMPLEADO;
+	private JTextField txtNOMPROVEEDOR;
+	private JTextField txtCARGOINS;
+	private JTable table_4;
+	private JButton btnNewButton_1;
 
 	/**
 	 * Launch the application.
@@ -153,9 +192,10 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 			contentPane.add(panel);
 			panel.setLayout(null);
 			{
-				btnSalir = new JButton("SALIR");
-				btnSalir.setBounds(29, 511, 89, 23);
-				panel.add(btnSalir);
+				btnNewButton_1 = new JButton("DESARROLLADORES");
+				btnNewButton_1.addActionListener(this);
+				btnNewButton_1.setBounds(10, 463, 159, 37);
+				panel.add(btnNewButton_1);
 			}
 		}
 		{
@@ -325,6 +365,25 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 					JScrollPane scrollEmpleados = new JScrollPane(table_1);
 					scrollEmpleados.setBounds(10, 106, 799, 311);
 					panel_2.add(scrollEmpleados);
+					table_1.addMouseListener(new MouseAdapter() {
+					    public void mouseClicked(MouseEvent e) {
+					        int fila = table_1.getSelectedRow();
+					        if (fila >= 0) {
+					            String id        = table_1.getValueAt(fila, 0).toString();
+					            String nombre    = table_1.getValueAt(fila, 1).toString();
+					            String apellido  = table_1.getValueAt(fila, 2).toString();
+					            String cargo     = table_1.getValueAt(fila, 3).toString();
+					            String salario   = table_1.getValueAt(fila, 4).toString();
+
+					            txtCodE.setText(id);
+					            txtNomE.setText(nombre);
+					            txtApelli.setText(apellido);
+					            txtCargoEmpleado.setText(cargo);
+					            txtSalario.setText(salario);
+					        }
+					    }
+					});
+
 				}
 			}
 			{
@@ -420,6 +479,26 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 					JScrollPane scrollProveedores = new JScrollPane(table_2);
 					scrollProveedores.setBounds(10, 109, 799, 303);
 					panel_4.add(scrollProveedores);
+					table_2.addMouseListener(new MouseAdapter() {
+					    public void mouseClicked(MouseEvent e) {
+					        int fila = table_2.getSelectedRow();
+					        if (fila >= 0) {
+					            String ruc       = table_2.getValueAt(fila, 0).toString();
+					            String empresa   = table_2.getValueAt(fila, 1).toString();
+					            String telefono  = table_2.getValueAt(fila, 2).toString();
+					            String email     = table_2.getValueAt(fila, 3).toString();
+					            String direccion = table_2.getValueAt(fila, 4).toString();
+					            String distrito  = table_2.getValueAt(fila, 5).toString();
+					            
+					            txtRuc.setText(ruc);
+					            txtEmpresa.setText(empresa);
+					            txtTelefono.setText(telefono);
+					            txtEmail.setText(email);
+					            txtDireccion.setText(direccion);
+					            txtDistrito.setText(distrito);
+					        }
+					    }
+					});
 				}
 				
 				JLabel lblNewLabel_14_1 = new JLabel("EMAIL:");
@@ -780,10 +859,270 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 				panel_5.add(lblNewLabel_11);
 			}
 			{
+				panel_6 = new JPanel();
+				tabbedPane.addTab("INSUMOS", null, panel_6, null);
+				panel_6.setLayout(null);
+				{
+					txtStockINS = new JTextField();
+					txtStockINS.setColumns(10);
+					txtStockINS.setBounds(64, 39, 85, 20);
+					panel_6.add(txtStockINS);
+				}
+				{
+					lblNewLabel_1 = new JLabel("INSUMO:");
+					lblNewLabel_1.setBounds(11, 14, 64, 14);
+					panel_6.add(lblNewLabel_1);
+				}
+				{
+					txtNomInsumo = new JTextField();
+					txtNomInsumo.setColumns(10);
+					txtNomInsumo.setBounds(64, 11, 86, 20);
+					panel_6.add(txtNomInsumo);
+				}
+				{
+					lblNewLabel_19 = new JLabel("STOCK:");
+					lblNewLabel_19.setBounds(10, 43, 64, 14);
+					panel_6.add(lblNewLabel_19);
+				}
+				{
+					btnAgregarInsumo = new JButton("AGREGAR");
+					btnAgregarInsumo.addActionListener(this);
+					btnAgregarInsumo.setBounds(11, 77, 89, 23);
+					panel_6.add(btnAgregarInsumo);
+				}
+				{
+					btnModificarInsumo = new JButton("MODIFICAR");
+					btnModificarInsumo.setBounds(110, 77, 111, 23);
+					panel_6.add(btnModificarInsumo);
+				}
+				{
+					btnEliminarInsumo = new JButton("ELIMINAR");
+					btnEliminarInsumo.setBounds(231, 77, 99, 23);
+					panel_6.add(btnEliminarInsumo);
+				}
+				{
+					txtDescripcionInsumo = new JTextField();
+					txtDescripcionInsumo.setColumns(10);
+					txtDescripcionInsumo.setBounds(265, 11, 332, 47);
+					panel_6.add(txtDescripcionInsumo);
+				}
+				{
+					lblNewLabel_25 = new JLabel("DESCRIPCIÓN:");
+					lblNewLabel_25.setBounds(181, 14, 93, 14);
+					panel_6.add(lblNewLabel_25);
+				}
+				{
+					btnBuscarInsumo = new JButton("BUSCAR");
+					btnBuscarInsumo.setBounds(340, 77, 89, 23);
+					panel_6.add(btnBuscarInsumo);
+				}
+				{
+					scrollPane_1 = new JScrollPane();
+					scrollPane_1.setBounds(11, 111, 800, 301);
+					panel_6.add(scrollPane_1);
+					{
+						table_3 = new JTable();
+						scrollPane_1.setViewportView(table_3);
+						table_3.addMouseListener(new MouseAdapter() {
+						    @Override
+						    public void mouseClicked(MouseEvent e) {
+						        int fila = table_3.getSelectedRow();
+						        if (fila != -1) {
+						            txtNomInsumo.setText(table_3.getValueAt(fila, 1).toString());
+						            txtDescripcionInsumo.setText(table_3.getValueAt(fila, 2).toString());
+						            txtStockINS.setText(table_3.getValueAt(fila, 3).toString());
+						        }
+						    }
+						});
+					}
+				}
+			}
+			{
+				panel_7 = new JPanel();
+				tabbedPane.addTab("COMPRAS INSUMOS", null, panel_7, null);
+				panel_7.setLayout(null);
+				{
+					lblNewLabel_26 = new JLabel("INSUMO:");
+					lblNewLabel_26.setBounds(11, 12, 60, 14);
+					panel_7.add(lblNewLabel_26);
+				}
+				{
+					lblNewLabel_27 = new JLabel("PRECIO COMPRA:");
+					lblNewLabel_27.setBounds(11, 37, 107, 14);
+					panel_7.add(lblNewLabel_27);
+				}
+				{
+					txtNOMINSUMO = new JTextField();
+					txtNOMINSUMO.setColumns(10);
+					txtNOMINSUMO.setBounds(62, 9, 107, 20);
+					panel_7.add(txtNOMINSUMO);
+				}
+				{
+					txtPRECOMPRAINS = new JTextField();
+					txtPRECOMPRAINS.setColumns(10);
+					txtPRECOMPRAINS.setBounds(109, 34, 60, 20);
+					panel_7.add(txtPRECOMPRAINS);
+				}
+				{
+					btnRegistrarComprasInsumo = new JButton("REGISTAR");
+					btnRegistrarComprasInsumo.addActionListener(this);
+					btnRegistrarComprasInsumo.setBounds(11, 92, 89, 23);
+					panel_7.add(btnRegistrarComprasInsumo);
+				}
+				{
+					btnModificarCompraInsumo = new JButton("MODIFICAR");
+					btnModificarCompraInsumo.setBounds(109, 92, 116, 23);
+					panel_7.add(btnModificarCompraInsumo);
+				}
+				{
+					lblNewLabel_28 = new JLabel("CANTIDAD:");
+					lblNewLabel_28.setBounds(175, 59, 72, 14);
+					panel_7.add(lblNewLabel_28);
+				}
+				{
+					lblNewLabel_29 = new JLabel("DESCRIPCIÓN:");
+					lblNewLabel_29.setBounds(175, 12, 86, 14);
+					panel_7.add(lblNewLabel_29);
+				}
+				{
+					txtDESINSUMO = new JTextField();
+					txtDESINSUMO.setColumns(10);
+					txtDESINSUMO.setBounds(255, 9, 156, 42);
+					panel_7.add(txtDESINSUMO);
+				}
+				{
+					txtCANTIDAD = new JTextField();
+					txtCANTIDAD.setColumns(10);
+					txtCANTIDAD.setBounds(257, 56, 76, 20);
+					panel_7.add(txtCANTIDAD);
+				}
+				{
+					lblNewLabel_30 = new JLabel("EMPLEADO:");
+					lblNewLabel_30.setBounds(421, 46, 116, 14);
+					panel_7.add(lblNewLabel_30);
+				}
+				{
+					lblNewLabel_31 = new JLabel("PROVEEDOR:");
+					lblNewLabel_31.setBounds(421, 16, 97, 14);
+					panel_7.add(lblNewLabel_31);
+				}
+				{
+					txtNOMEMPLEADO = new JTextField();
+					txtNOMEMPLEADO.setEditable(false);
+					txtNOMEMPLEADO.setColumns(10);
+					txtNOMEMPLEADO.setBounds(591, 44, 96, 20);
+					panel_7.add(txtNOMEMPLEADO);
+				}
+				{
+					txtCARGOINS = new JTextField();
+					txtCARGOINS.setEditable(false);
+					txtCARGOINS.setColumns(10);
+					txtCARGOINS.setBounds(690, 44, 96, 20);
+					panel_7.add(txtCARGOINS);
+				}
+				{
+					cmbProveedorINS = new JComboBox<>();
+					cmbProveedorINS.setBounds(528, 12, 86, 22);
+					panel_7.add(cmbProveedorINS);
+					cmbProveedorINS.addActionListener(new ActionListener() {
+					    public void actionPerformed(ActionEvent e) {
+					        String idProveedor = (String) cmbProveedorINS.getSelectedItem();
+					        if (idProveedor != null) {
+					            ArrayProveedor array = new ArrayProveedor();
+					            ArrayList<Proveedor> lista = array.ConsultarProveedoresID(idProveedor);
+					            if (!lista.isEmpty()) {
+					                Proveedor p = lista.get(0);
+					                txtNOMPROVEEDOR.setText(p.getNombre_PROV());
+					            } else {
+					                txtNOMPROVEEDOR.setText("");
+					            }
+					        }
+					    }
+					});
+					{
+						txtNOMPROVEEDOR = new JTextField();
+						txtNOMPROVEEDOR.setEditable(false);
+						txtNOMPROVEEDOR.setColumns(10);
+						txtNOMPROVEEDOR.setBounds(638, 14, 96, 20);
+						panel_7.add(txtNOMPROVEEDOR);
+					}
+				{
+					cmbEmpleadoINS = new JComboBox<>();
+					cmbEmpleadoINS.setBounds(495, 42, 86, 22);
+					panel_7.add(cmbEmpleadoINS);
+					cmbEmpleadoINS.addActionListener(new ActionListener() {
+					    public void actionPerformed(ActionEvent e) {
+					        String idEmpleado = (String) cmbEmpleadoINS.getSelectedItem();
+					        if (idEmpleado != null) {
+					            ArrayEmpleados array = new ArrayEmpleados();
+					            ArrayList<Empleados> lista = array.ConsultarEmpleadosID(idEmpleado);
+					            if (!lista.isEmpty()) {
+					                Empleados emp = lista.get(0);
+					                txtNOMEMPLEADO.setText(emp.getNombre_EMP());
+					                txtCARGOINS.setText(emp.getCargo_EMP());
+					            } else {
+					                txtNOMEMPLEADO.setText("");
+					                txtCARGOINS.setText("");
+					            }
+					        }
+					    }
+					});
+				}	
+				}
+				llenarComboProveedoresINS(cmbProveedorINS);
+				llenarComboEmpleadosSUPERVISOR_INS(cmbEmpleadoINS);
+				{
+					btnEliminarCompraInsumo = new JButton("ELIMINAR");
+					btnEliminarCompraInsumo.setBounds(235, 92, 107, 23);
+					panel_7.add(btnEliminarCompraInsumo);
+				}
+				{
+					btnBuscarCompraInsumo = new JButton("BUSCAR");
+					btnBuscarCompraInsumo.setBounds(352, 92, 107, 23);
+					panel_7.add(btnBuscarCompraInsumo);
+				}
+				{
+					scrollPane_2 = new JScrollPane();
+					scrollPane_2.setBounds(11, 126, 799, 287);
+					panel_7.add(scrollPane_2);
+					{
+						table_4 = new JTable();
+						scrollPane_2.setViewportView(table_4);
+						table_4.addMouseListener(new MouseAdapter() {
+						    public void mouseClicked(MouseEvent e) {
+						        int fila = table_4.getSelectedRow();
+						        if (fila >= 0) {
+						            // Obtener los datos de la tabla
+						            String insumo   = table_4.getValueAt(fila, 6).toString(); // INSUMO
+						            String cantidad = table_4.getValueAt(fila, 7).toString(); // CANTIDAD
+						            String precio   = table_4.getValueAt(fila, 8).toString(); // PRECIO COMPRA
+
+						            // Llenar los campos visibles
+						            txtNOMINSUMO.setText(insumo);
+						            txtCANTIDAD.setText(cantidad);
+						            txtPRECOMPRAINS.setText(precio);
+
+						            // Buscar descripción en la base de datos
+						            ArrayInsumos dao = new ArrayInsumos();
+						            ArrayList<Insumos> lista = dao.ConsultarPorNombre(insumo);
+						            if (!lista.isEmpty()) {
+						                txtDescripcionInsumo.setText(lista.get(0).getDescripcion_INS());
+						            } else {
+						                txtDescripcionInsumo.setText("");
+						            }
+						        }
+						    }
+						});
+					}
+				}
+			}
+			{
 				ListarC("");
 				ListarP("");
 				ListarE("");
 				ListarPV("");
+				ListarI("");
+				ListarCI("");
 			}
 			
 		}	
@@ -791,6 +1130,15 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnNewButton_1) {
+			do_btnNewButton_1_actionPerformed(e);
+		}
+		if (e.getSource() == btnRegistrarComprasInsumo) {
+			do_btnRegistrarComprasInsumo_actionPerformed(e);
+		}
+		if (e.getSource() == btnAgregarInsumo) {
+			do_btnAgregarInsumo_actionPerformed(e);
+		}
 		if (e.getSource() == btnBuscarProducto) {
 			do_btnBuscarProducto_actionPerformed(e);
 		}
@@ -917,8 +1265,8 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 		modelo2.addColumn("EMPRESA");
 		modelo2.addColumn("Teléfono");
 		modelo2.addColumn("Email");
-		modelo2.addColumn("Distrito");
 		modelo2.addColumn("Dirección");
+		modelo2.addColumn("Distrito");
 		
 		int i=0;
 		while(it.hasNext())
@@ -944,6 +1292,13 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 	        cmb.addItem(p.getID_PROVEEDOR());
 		    }
 		}
+	public void llenarComboProveedoresINS(JComboBox<String> cmbProveedorINS) {
+	    cmbProveedorINS.removeAllItems(); // LIMPIAR COMBO
+	    ArrayProveedor prov = new ArrayProveedor();
+	    for (Proveedor p : prov.ListarProveedores()) {
+	        cmbProveedorINS.addItem(p.getID_PROVEEDOR());
+	    }
+	}
 
 	// LLENAR COMBO DE EMPLEADOS
 	public void LlenarComboEmpleadosSUPER(JComboBox<String> cmb) {
@@ -955,7 +1310,15 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 		    }
 		}
 	}
-
+	public void llenarComboEmpleadosSUPERVISOR_INS(JComboBox<String> cmbEmpleadoINS) {
+	    cmbEmpleadoINS.removeAllItems(); // LIMPIAR COMBO
+	    ArrayEmpleados empleadosDAO = new ArrayEmpleados();
+	    for (Empleados emp : empleadosDAO.ListarEmpleados()) {
+	        if (emp.getCargo_EMP().equalsIgnoreCase("Supervisor")) {
+	            cmbEmpleadoINS.addItem(emp.getID_EMPLEADO());
+	        }
+	    }
+	}
 	
 	//PROGRAMAMOS LA PESTAÑA PRODUCTOS	
 	void LimpiarP() {
@@ -1522,5 +1885,361 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 	    }
 	}
 	protected void do_txtEmail_keyTyped(KeyEvent e) {
+	}
+	
+	public void ListarI(String nombre) {
+	    DefaultTableModel modelo = new DefaultTableModel();
+	    ArrayInsumos AI = new ArrayInsumos();
+	    ArrayList<Insumos> lista;
+
+	    if (nombre.length() == 0) {
+	        lista = AI.listarInsumos();
+	    } else {
+	        lista = AI.ConsultarPorNombre(nombre);
+	    }
+
+	    modelo.addColumn("Código");
+	    modelo.addColumn("Nombre");
+	    modelo.addColumn("Descripción");
+	    modelo.addColumn("Stock");
+
+	    for (Insumos ins : lista) {
+	        Object[] fila = new Object[4];
+	        fila[0] = ins.getID_INSUMO();
+	        fila[1] = ins.getNombre_INS();
+	        fila[2] = ins.getDescripcion_INS();
+	        fila[3] = ins.getStock_INS();
+	        modelo.addRow(fila);
+	    }
+	    table_3.setModel(modelo);
+	}
+	
+	void LimpiarI() {
+	    txtNomInsumo.setText("");
+	    txtDescripcionInsumo.setText("");
+	    txtStockINS.setText("");
+	}
+	
+	protected void do_btnAgregarInsumo_actionPerformed(ActionEvent e) {
+		try {
+	        ArrayInsumos AI = new ArrayInsumos();
+	        String nombre = txtNomInsumo.getText().trim();
+	        String descripcion = txtDescripcionInsumo.getText().trim();
+	        int stockNuevo = Integer.parseInt(txtStockINS.getText().trim());
+
+	        // Verificar si ya existe un insumo con ese nombre
+	        ArrayList<Insumos> lista = AI.ConsultarPorNombre(nombre);
+
+	        if (lista.isEmpty()) {
+	            // Si NO existe, generar nuevo ID e insertar
+	            String nuevoID = AI.generarNuevoIDInsumo();
+	            Insumos ins = new Insumos(nuevoID, nombre, descripcion, stockNuevo);
+	            AI.insertar(ins);
+	            JOptionPane.showMessageDialog(null, "Insumo agregado con ID: " + nuevoID);
+	        } else {
+	            // Si ya existe, sumamos stock
+	            Insumos existente = lista.get(0); // Solo debería haber uno
+	            String idExistente = existente.getID_INSUMO();
+	            AI.actualizarStock(idExistente, stockNuevo);
+	            JOptionPane.showMessageDialog(null, "El insumo ya existe, se ha sumado el nuevo stock.");
+	        }
+
+	        ListarI("");
+	        LimpiarI();
+
+	    } catch (Exception e2) {
+	        JOptionPane.showMessageDialog(null, "Datos vacíos o inválidos");
+	        System.out.println("ERROR al agregar insumo: " + e2);
+	    }
+	}
+	
+	protected void do_btnModificarInsumo_actionPerformed(ActionEvent e) {
+		try {
+	        String nombre = txtNomInsumo.getText().trim();
+	        String descripcion = txtDescripcionInsumo.getText().trim();
+	        int stock = Integer.parseInt(txtStockINS.getText());
+
+	        ArrayInsumos AI = new ArrayInsumos();
+	        ArrayList<Insumos> lista = AI.ConsultarPorNombre(nombre);
+
+	        if (lista.isEmpty()) {
+	            JOptionPane.showMessageDialog(null, "No se encontró el insumo con ese nombre.");
+	            return;
+	        }
+
+	        String idInsumo = lista.get(0).getID_INSUMO();
+	        Insumos i = new Insumos(idInsumo, nombre, descripcion, stock);
+	        AI.editar(i);
+	        ListarI("");
+	        LimpiarI();
+	        JOptionPane.showMessageDialog(null, "Insumo modificado correctamente.");
+	    } catch (Exception ex) {
+	        JOptionPane.showMessageDialog(null, "Error al modificar insumo: " + ex.getMessage());
+	    }
+	}
+	
+	protected void do_btnEliminarInsumo_actionPerformed(ActionEvent e) {
+		try {
+	        String nombre = txtNomInsumo.getText().trim();
+	        if (nombre.isEmpty()) {
+	            JOptionPane.showMessageDialog(null, "Ingrese el nombre del insumo a eliminar.");
+	            return;
+	        }
+
+	        ArrayInsumos AI = new ArrayInsumos();
+	        AI.eliminarPorNombre(nombre);
+	        ListarI("");
+	        LimpiarI();
+	        JOptionPane.showMessageDialog(null, "Insumo eliminado correctamente.");
+	    } catch (Exception ex) {
+	        JOptionPane.showMessageDialog(null, "Error al eliminar insumo: " + ex.getMessage());
+	    }
+	}
+	
+	protected void do_btnBuscarInsumo_actionPerformed(ActionEvent e) {
+		String nombre = txtNomInsumo.getText().trim();
+	    ListarI(nombre);
+	}
+	public void ListarCI(String nom) {
+	    DefaultTableModel modelo = new DefaultTableModel();
+	    ArrayCompraInsumos aci = new ArrayCompraInsumos();
+	    ArrayEmpleados empleadosDAO = new ArrayEmpleados();
+	    ArrayProveedor proveedoresDAO = new ArrayProveedor();
+
+	    ArrayList<ComprasInsumos> listaC;
+
+	    if (nom.length() == 0) {
+	        listaC = aci.listar();
+	    } else {
+	    	listaC = aci.consultarPorID(nom);
+	    }
+
+	    modelo.addColumn("ID COMPRA");
+	    modelo.addColumn("RUC PROV");
+	    modelo.addColumn("NOM PROV");
+	    modelo.addColumn("DNI EMP");
+	    modelo.addColumn("NOM EMP");
+	    modelo.addColumn("FECHA");
+	    modelo.addColumn("INSUMO");
+	    modelo.addColumn("CANTIDAD");
+	    modelo.addColumn("P COMPRA");
+	    modelo.addColumn("TOTAL");
+
+	    for (ComprasInsumos c : listaC) {
+	        String nombreEmpleado = "";
+	        String nombreProveedor = "";
+
+	        for (Empleados emp : empleadosDAO.ListarEmpleados()) {
+	            if (emp.getID_EMPLEADO().equals(c.getID_EMPLEADO())) {
+	                nombreEmpleado = emp.getNombre_EMP();
+	                break;
+	            }
+	        }
+
+	        for (Proveedor prov : proveedoresDAO.ListarProveedores()) {
+	            if (prov.getID_PROVEEDOR().equals(c.getID_PROVEEDOR())) {
+	                nombreProveedor = prov.getNombre_PROV();
+	                break;
+	            }
+	        }
+
+	        Object[] fila = {
+	            c.getID_COMPRA(), c.getID_PROVEEDOR(), nombreProveedor,
+	            c.getID_EMPLEADO(), nombreEmpleado, c.getFECHA_COM_INS(),
+	            c.getNOMBRE_INS(), c.getCANTIDAD_COM_INS(),
+	            c.getPRECIOC_COM_INS(), c.getTOTAL_COM_INS()
+	        };
+	        
+	        modelo.addRow(fila);
+	    }
+	    table_4.setModel(modelo);
+	}
+	protected void do_btnRegistrarComprasInsumo_actionPerformed(ActionEvent e) {
+		try {
+	        String nombre = txtNOMINSUMO.getText().trim();
+	        String descripcion = txtDESINSUMO.getText().trim();
+	        int cantidad = Integer.parseInt(txtCANTIDAD.getText());
+	        double precioCompra = Double.parseDouble(txtPRECOMPRAINS.getText());
+	        double total = precioCompra * cantidad;
+
+	        String idProveedor = (String) cmbProveedorINS.getSelectedItem();
+	        String idEmpleado = (String) cmbEmpleadoINS.getSelectedItem();
+
+	        ArrayEmpleados daoEmp = new ArrayEmpleados();
+	        ArrayList<Empleados> empList = daoEmp.ConsultarEmpleadosID(idEmpleado);
+	        if (empList.isEmpty() || !empList.get(0).getCargo_EMP().equalsIgnoreCase("Supervisor")) {
+	            JOptionPane.showMessageDialog(null, "Solo un Supervisor puede registrar compras.");
+	            return;
+	        }
+
+	        // Verificar si el insumo ya existe
+	        ArrayInsumos daoIns = new ArrayInsumos();
+	        ArrayList<Insumos> existe = daoIns.ConsultarPorNombre(nombre);
+	        String idInsumo;
+
+	        if (!existe.isEmpty()) {
+	            idInsumo = existe.get(0).getID_INSUMO();
+	            daoIns.actualizarStock(idInsumo, cantidad);
+	        } else {
+	            idInsumo = daoIns.generarNuevoIDInsumo();
+	            Insumos nuevo = new Insumos(idInsumo, nombre, descripcion, cantidad);
+	            daoIns.insertar(nuevo);
+	        }
+
+	        ArrayCompraInsumos daoCompra = new ArrayCompraInsumos();
+	        String idCompra = daoCompra.generarNuevoIDCompra();
+
+	        ComprasInsumos ci = new ComprasInsumos(
+	            idCompra,
+	            idProveedor,
+	            idEmpleado,
+	            nombre,
+	            null,
+	            cantidad,
+	            precioCompra,
+	            total
+	        );
+	        daoCompra.insertar(ci);
+
+	        JOptionPane.showMessageDialog(null, "Compra de insumo registrada.");
+	        ListarCI("");
+	        ListarI("");
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(null, "Error al registrar compra: " + ex.getMessage());
+	    }
+	}
+	
+	protected void do_btnModificarCompraInsumo_actionPerformed(ActionEvent e) {
+		try {
+	        int fila = table_4.getSelectedRow();
+	        if (fila == -1) {
+	            JOptionPane.showMessageDialog(null, "Seleccione una fila para modificar.");
+	            return;
+	        }
+
+	        String idCompra = table_4.getValueAt(fila, 0).toString();  // ID_COMPRA
+
+	        String nombre = txtNOMINSUMO.getText().trim();
+	        String descripcion = txtDES.getText().trim();
+	        int nuevaCantidad = Integer.parseInt(txtCANT.getText());
+	        double nuevoPrecioCompra = Double.parseDouble(txtPRECOM.getText());
+	        double nuevoTotal = nuevaCantidad * nuevoPrecioCompra;
+
+	        String idProveedor = (String) cmbProveedor.getSelectedItem();
+	        String idEmpleado = (String) cmbEmpleado.getSelectedItem();
+
+	        ArrayInsumos daoInsumo = new ArrayInsumos();
+	        ArrayList<Insumos> lista = daoInsumo.ConsultarPorNombre(nombre);
+
+	        if (lista.isEmpty()) {
+	            JOptionPane.showMessageDialog(null, "No se encontró el insumo a modificar.");
+	            return;
+	        }
+
+	        String idInsumo = lista.get(0).getID_INSUMO();
+	        int stockActual = lista.get(0).getStock_INS();
+
+	        ArrayCompraInsumos daoCompra = new ArrayCompraInsumos();
+	        ArrayList<ComprasInsumos> listaOriginal = daoCompra.consultarPorID(idCompra);
+
+	        if (listaOriginal.isEmpty()) {
+	            JOptionPane.showMessageDialog(null, "No se encontró la compra original.");
+	            return;
+	        }
+
+	        ComprasInsumos compraOriginal = listaOriginal.get(0);
+	        int cantidadOriginal = compraOriginal.getCANTIDAD_COM_INS();
+
+	        int diferenciaCantidad = nuevaCantidad - cantidadOriginal;
+	        int nuevoStock = stockActual + diferenciaCantidad;
+
+	        if (nuevoStock < 0) {
+	            JOptionPane.showMessageDialog(null, "No se puede modificar. El stock quedaría negativo.");
+	            return;
+	        }
+
+	        // Actualizar compra
+	        ComprasInsumos nuevaCompra = new ComprasInsumos(
+	            idCompra, idProveedor, idEmpleado,
+	            nombre, null,
+	            nuevaCantidad, nuevoPrecioCompra, nuevoTotal
+	        );
+	        daoCompra.editar(nuevaCompra);
+
+	        daoInsumo.actualizarStock(idInsumo, diferenciaCantidad);
+
+	        JOptionPane.showMessageDialog(null, "Compra de insumo modificada correctamente.");
+	        ListarCI("");
+	        ListarI("");
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage());
+	    }
+	}
+	
+	protected void do_btnEliminarCompraInsumo_actionPerformed(ActionEvent e) {
+		try {
+	        int fila = table_4.getSelectedRow();
+	        if (fila == -1) {
+	            JOptionPane.showMessageDialog(null, "Seleccione una fila para eliminar.");
+	            return;
+	        }
+
+	        String idCompra = table_4.getValueAt(fila, 0).toString();     // ID_COMPRA
+	        String nombreInsumo = table_4.getValueAt(fila, 4).toString(); // NOMBRE_INS
+	        int cantidadComprada = Integer.parseInt(table_4.getValueAt(fila, 5).toString());
+
+	        // Buscar el insumo por nombre
+	        ArrayInsumos daoInsumo = new ArrayInsumos();
+	        ArrayList<Insumos> insumos = daoInsumo.ConsultarPorNombre(nombreInsumo);
+
+	        if (insumos.isEmpty()) {
+	            JOptionPane.showMessageDialog(null, "Insumo no encontrado en la base de datos.");
+	            return;
+	        }
+
+	        Insumos insumo = insumos.get(0);
+	        String idInsumo = insumo.getID_INSUMO();
+	        int stockActual = insumo.getStock_INS();
+	        int stockRestante = stockActual - cantidadComprada;
+
+	        if (stockRestante < 0) {
+	            JOptionPane.showMessageDialog(null, "No se puede eliminar la compra. El stock quedaría negativo.");
+	            return;
+	        }
+
+	        if (stockRestante == 0) {
+	            daoInsumo.eliminarPorNombre(nombreInsumo);
+	        } else {
+	            daoInsumo.actualizarStock(idInsumo, -cantidadComprada);
+	        }
+
+	        // Eliminar la compra
+	        ArrayCompraInsumos daoCompra = new ArrayCompraInsumos();
+	        daoCompra.eliminar(idCompra);
+
+	        ListarCI("");
+	        ListarI("");
+	        JOptionPane.showMessageDialog(null, "Compra de insumo eliminada correctamente.");
+
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(null, "Error al eliminar: " + ex.getMessage());
+	    }
+	}
+	
+	protected void do_btnBuscarCompraInsumo_actionPerformed(ActionEvent e) {
+		String nombre = txtNOMINSUMO.getText().trim();
+	    if (!nombre.isEmpty()) {
+	        ListarCI(nombre);
+	    } else {
+	        ListarCI(""); // Mostrar todo si está vacío
+	    }
+	}
+	protected void do_btnNewButton_1_actionPerformed(ActionEvent e) {
+		Programadores p2 = new Programadores();
+		p2.setVisible(true);
+		this.setVisible(false);
 	}
 }
