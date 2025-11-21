@@ -1,0 +1,46 @@
+-- LISTAR INSUMOS
+CREATE PROCEDURE SP_Listar_INS()
+SELECT * FROM INSUMOS;
+
+-- INSERTAR INSUMO
+CREATE PROCEDURE SP_Insertar_INS(
+    id VARCHAR(30),
+    nom VARCHAR(100),
+    des VARCHAR(150),
+    stock INT
+)
+INSERT INTO INSUMOS (ID_INSUMO, Nombre_INS, Descripcion_INS, Stock_INS)
+VALUES (id, nom, des, stock);
+
+-- ELIMINAR INSUMO por nombre
+CREATE PROCEDURE SP_Eliminar_INS(
+    id VARCHAR(100)
+)
+DELETE FROM INSUMOS WHERE Nombre_INS = id;
+
+-- EDITAR INSUMO
+CREATE PROCEDURE SP_Editar_INS(
+    id VARCHAR(30),
+    nom VARCHAR(100),
+    des VARCHAR(150),
+    stock INT
+)
+UPDATE INSUMOS
+SET Nombre_INS = nom,
+    Descripcion_INS = des,
+    Stock_INS = stock
+WHERE ID_INSUMO = id;
+
+-- CONSULTAR INSUMOS POR NOMBRE
+CREATE PROCEDURE SP_ConsultarNOMBRE_INS(
+    nom VARCHAR(100)
+)
+SELECT * FROM INSUMOS WHERE Nombre_INS LIKE CONCAT('%', nom, '%');
+
+-- ACTUALIZAR STOCK DE INSUMO
+CREATE PROCEDURE SP_ActualizarStock_INS(
+    IN p_idInsumo VARCHAR(30),
+    IN p_cantidad INT
+)
+UPDATE INSUMOS SET Stock_INS = Stock_INS + p_cantidad
+WHERE ID_INSUMO = p_idInsumo;

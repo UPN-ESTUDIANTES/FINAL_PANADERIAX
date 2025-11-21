@@ -155,6 +155,8 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 	private JTextField txtCARGOINS;
 	private JTable table_4;
 	private JButton btnNewButton_1;
+	private JButton btnSalir;
+	private JPanel panel_8;
 
 	/**
 	 * Launch the application.
@@ -190,12 +192,18 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 			panel.setBackground(Color.ORANGE);
 			panel.setBounds(0, 0, 179, 545);
 			contentPane.add(panel);
-			panel.setLayout(null);
 			{
 				btnNewButton_1 = new JButton("DESARROLLADORES");
-				btnNewButton_1.addActionListener(this);
 				btnNewButton_1.setBounds(10, 463, 159, 37);
+				btnNewButton_1.addActionListener(this);
+				panel.setLayout(null);
 				panel.add(btnNewButton_1);
+			}
+			{
+				btnSalir = new JButton("SALIR");
+				btnSalir.addActionListener(this);
+				btnSalir.setBounds(10, 422, 159, 32);
+				panel.add(btnSalir);
 			}
 		}
 		{
@@ -1088,6 +1096,10 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 					{
 						table_4 = new JTable();
 						scrollPane_2.setViewportView(table_4);
+						{
+							panel_8 = new JPanel();
+							tabbedPane.addTab("New tab", null, panel_8, null);
+						}
 						table_4.addMouseListener(new MouseAdapter() {
 						    public void mouseClicked(MouseEvent e) {
 						        int fila = table_4.getSelectedRow();
@@ -1130,6 +1142,9 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnSalir) {
+			do_btnSalir_actionPerformed(e);
+		}
 		if (e.getSource() == btnNewButton_1) {
 			do_btnNewButton_1_actionPerformed(e);
 		}
@@ -2241,5 +2256,15 @@ public class Sistema_Administrador extends JFrame implements ActionListener, Key
 		Programadores p2 = new Programadores();
 		p2.setVisible(true);
 		this.setVisible(false);
+	}
+	
+	
+	//PROGRAMAMOS EL BOTÓN SALIR
+	protected void do_btnSalir_actionPerformed(ActionEvent e) 
+	{
+		dispose();
+		Login login = new Login();
+        login.setVisible(true);
+        login.setLocationRelativeTo(null); // Centra la ventana
 	}
 }

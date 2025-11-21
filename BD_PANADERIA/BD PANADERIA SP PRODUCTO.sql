@@ -1,0 +1,119 @@
+-- INSERCIÓN DE PRODUCTOS INICIALES
+INSERT INTO PRODUCTOS VALUES('A01', 'Pan Francés', 'Pan crocante tradicional', 0.30, 200);
+INSERT INTO PRODUCTOS VALUES('A02', 'Croissant', 'Croissant de mantequilla horneado', 1.20, 50);
+INSERT INTO PRODUCTOS VALUES('A03', 'Empanada de Pollo', 'Empanada rellena de pollo desmenuzado', 2.50, 30);
+INSERT INTO PRODUCTOS VALUES('A04', 'Torta de Chocolate', 'Torta húmeda de chocolate por porción', 3.00, 25);
+INSERT INTO PRODUCTOS VALUES('A05', 'Pan Integral', 'Pan hecho con harina integral y semillas', 0.50, 100);
+-- MOSTRAR TODOS LOS PRODUCTOS
+DROP PROCEDURE IF EXISTS SP_Listar_PRO;
+DELIMITER //
+CREATE PROCEDURE SP_Listar_PRO()
+BEGIN
+    SELECT * FROM PRODUCTOS;
+END;
+//
+DELIMITER ;
+
+-- INSERTAR UN NUEVO PRODUCTO
+DROP PROCEDURE IF EXISTS SP_Insertar_PRO;
+DELIMITER //
+CREATE PROCEDURE SP_Insertar_PRO(
+    IN id VARCHAR(30),
+    IN nom VARCHAR(100),
+    IN des VARCHAR(150),
+    IN pre REAL,
+    IN stock INT)
+BEGIN
+    INSERT INTO PRODUCTOS VALUES(id, nom, des, pre, stock);
+END;
+//
+DELIMITER ;
+
+-- ELIMINAR UN PRODUCTO POR SU ID
+DROP PROCEDURE IF EXISTS SP_Eliminar_PRO;
+DELIMITER //
+CREATE PROCEDURE SP_Eliminar_PRO(
+    IN id VARCHAR(30))
+BEGIN
+    DELETE FROM PRODUCTOS WHERE ID_PRODUCTO = id;
+END;
+//
+DELIMITER ;
+
+-- EDITAR UN PRODUCTO
+DROP PROCEDURE IF EXISTS SP_Editar_PRO;
+DELIMITER //
+CREATE PROCEDURE SP_Editar_PRO(
+    IN id VARCHAR(30),
+    IN nom VARCHAR(100),
+    IN des VARCHAR(150),
+    IN pre REAL,
+    IN stock INT)
+BEGIN
+    UPDATE PRODUCTOS
+    SET Nombre_PRO = nom,
+        Descripcion_PRO = des,
+        Precio_venta = pre,
+        Stock_PRO = stock
+    WHERE ID_PRODUCTO = id;
+END;
+//
+DELIMITER ;
+
+-- CONSULTAR POR NOMBRE (BUSQUEDA PARCIAL)
+DROP PROCEDURE IF EXISTS SP_ConsultarNOMBRE_PRO;
+DELIMITER //
+CREATE PROCEDURE SP_ConsultarNOMBRE_PRO(
+    IN nom VARCHAR(100))
+BEGIN
+    SELECT * FROM PRODUCTOS
+    WHERE Nombre_PRO LIKE CONCAT('%', nom, '%');
+END;
+//
+DELIMITER ;
+
+-- ACTUALIZAR STOCK
+DROP PROCEDURE IF EXISTS SP_ActualizarStock_PRO;
+DELIMITER //
+CREATE PROCEDURE SP_ActualizarStock_PRO(
+    IN p_idProducto VARCHAR(30),
+    IN p_cantidad INT)
+BEGIN
+    UPDATE PRODUCTOS
+    SET Stock_PRO = Stock_PRO + p_cantidad
+    WHERE ID_PRODUCTO = p_idProducto;
+END;
+//
+DELIMITER ;
+
+-- ACTUALIZAR PRECIO DE VENTA
+DROP PROCEDURE IF EXISTS SP_Actualizar_PrecioVenta;
+DELIMITER //
+CREATE PROCEDURE SP_Actualizar_PrecioVenta(
+    IN cod VARCHAR(30),
+    IN nuevoPrecio REAL)
+BEGIN
+    UPDATE PRODUCTOS
+    SET Precio_venta = nuevoPrecio
+    WHERE ID_PRODUCTO = cod;
+END;
+//
+DELIMITER ;
+
+
+
+
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS SP_ActualizarStock_PRO;
+CREATE PROCEDURE SP_ActualizarStock_PRO(
+    IN p_idProducto VARCHAR(30),
+    IN p_cantidad INT
+)
+BEGIN
+    UPDATE PRODUCTOS
+    SET Stock_PRO = Stock_PRO + p_cantidad
+    WHERE ID_PRODUCTO = p_idProducto;
+END;
+//
+DELIMITER ;

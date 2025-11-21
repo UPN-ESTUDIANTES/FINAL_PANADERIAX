@@ -2,12 +2,16 @@ package VENTAS;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
 import CONEXIÓN.ConexiónMySQL;
 
 public class ArrayVentaDetallada 
@@ -95,25 +99,47 @@ public class ArrayVentaDetallada
     public void Insertar(VentaDetallada ven) {
         try {
             Connection cnx = ConexiónMySQL.getConexión();
-            CallableStatement csta = cnx.prepareCall("{call SP_Insertar_VENTA_DETALLADA(?, ?, ?, ?, ?, ?, ?, ?)}");
 
+            // 🔍 Verificar si el producto existe
+            String sqlVerifica = "SELECT COUNT(*) FROM PRODUCTOS WHERE ID_PRODUCTO = ?";
+            PreparedStatement ps = cnx.prepareStatement(sqlVerifica);
+            ps.setString(1, ven.getProducto());
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+
+            if (rs.getInt(1) == 0) {
+                System.out.println("❌ ERROR: El producto con ID '" + ven.getProducto() + "' no existe. No se puede insertar la venta.");
+                JOptionPane.showMessageDialog(null, "El producto con ID '" + ven.getProducto() + "' no existe en la base de datos.");
+                rs.close();
+                ps.close();
+                cnx.close();
+                return;
+            }
+
+            rs.close();
+            ps.close();
+
+            // ✅ Procede a insertar si el producto es válido
+            CallableStatement csta = cnx.prepareCall("{call SP_Insertar_VENTA_DETALLADA(?, ?, ?, ?, ?, ?, ?, ?)}");
             csta.setString(1, ven.getIdVenta());
             csta.setString(2, ven.getIdCliente());
             csta.setString(3, ven.getIdEmpleado());
             csta.setTimestamp(4, Timestamp.valueOf(ven.getFecha()));
-            csta.setString(5, ven.getProducto());
+            csta.setString(5, ven.getProducto()); // ID_PRODUCTO válido
             csta.setInt(6, ven.getCantidad());
             csta.setDouble(7, ven.getPrecioUnitario());
             csta.setDouble(8, ven.getSubtotal());
 
-            csta.executeUpdate(); // NO uses executeQuery aquí
+            csta.executeUpdate();
             csta.close();
             cnx.close();
 
         } catch (Exception e) {
             System.out.println("ERROR en insertar: " + e);
+            JOptionPane.showMessageDialog(null, "Error en la base de datos: " + e.getMessage());
         }
     }
+
     
     public void Eliminar(String id) {
     	try {

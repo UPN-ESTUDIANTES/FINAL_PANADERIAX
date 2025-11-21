@@ -1,0 +1,54 @@
+-- CAMBIAR DELIMITADOR TEMPORALMENTE
+DELIMITER //
+
+-- PROCEDIMIENTO: Listar venta detallada con JOIN a productos
+CREATE PROCEDURE SP_Listar_VENTA_DETALLADA()
+BEGIN
+    SELECT 
+        vd.ID_VENTA,
+        vd.ID_CLIENTE,
+        vd.ID_EMPLEADO,
+        vd.Fecha_VEN,
+        vd.ID_PRODUCTO,
+        p.Nombre_PRO AS PRODUCTO,
+        vd.CANTIDAD,
+        vd.PRECIO_UNITARIO,
+        vd.SUBTOTAL
+    FROM VENTA_DETALLADA vd
+    JOIN PRODUCTOS p ON vd.ID_PRODUCTO = p.ID_PRODUCTO;
+END //
+
+-- PROCEDIMIENTO: Insertar
+CREATE PROCEDURE SP_Insertar_VENTA_DETALLADA(
+    IN idVenta VARCHAR(30),
+    IN idCliente VARCHAR(30),
+    IN idEmpleado VARCHAR(30),
+    IN fecha DATETIME,
+    IN idProducto VARCHAR(30),
+    IN cantidad INT,
+    IN precio REAL,
+    IN subtotal REAL
+)
+BEGIN
+    INSERT INTO VENTA_DETALLADA 
+    (ID_VENTA, ID_CLIENTE, ID_EMPLEADO, Fecha_VEN, ID_PRODUCTO, CANTIDAD, PRECIO_UNITARIO, SUBTOTAL)
+    VALUES (idVenta, idCliente, idEmpleado, fecha, idProducto, cantidad, precio, subtotal);
+END //
+
+
+CALL SP_Insertar_VENTA_DETALLADA(
+  'V002', '14156576', '12345678', NOW(), 'A01', 4, 0.30, 1.20
+);
+
+DELIMITER //
+
+CREATE PROCEDURE SP_Eliminar_VENTA_DETALLADA(IN idVenta VARCHAR(30))
+BEGIN
+    DELETE FROM VENTA_DETALLADA WHERE ID_VENTA = idVenta;
+END //
+
+DELIMITER ;
+CALL SP_Eliminar_VENTA_DETALLADA('V002');
+
+CALL SP_Listar_VENTA_DETALLADA()
+

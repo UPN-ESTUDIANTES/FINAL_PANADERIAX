@@ -1,0 +1,52 @@
+-- LISTAR COMPRAS DE INSUMOS
+CREATE PROCEDURE SP_Listar_COM_INS()
+SELECT * FROM COMPRA_INSUMOS
+ORDER BY FECHA_COM_INS DESC;
+
+-- INSERTAR COMPRA DE INSUMO
+CREATE PROCEDURE SP_Insertar_COM_INS(
+    id VARCHAR(30),
+    proveedor VARCHAR(30),
+    empleado VARCHAR(30),
+    nombreInsumo VARCHAR(100),
+    cantidad INT,
+    precio REAL,
+    total REAL
+)
+INSERT INTO COMPRA_INSUMOS (
+    ID_COMPRA, ID_PROVEEDOR, ID_EMPLEADO, NOMBRE_INS,
+    CANTIDAD_COM_INS, PRECIOC_COM_INS, TOTAL_COM_INS
+)
+VALUES (id, proveedor, empleado, nombreInsumo,
+        cantidad, precio, total);
+
+-- ELIMINAR COMPRA DE INSUMO
+CREATE PROCEDURE SP_Eliminar_COM_INS(
+    id VARCHAR(30)
+)
+DELETE FROM COMPRA_INSUMOS WHERE ID_COMPRA = id;
+
+-- EDITAR COMPRA DE INSUMO
+CREATE PROCEDURE SP_Editar_COM_INS(
+    id VARCHAR(30),
+    proveedor VARCHAR(30),
+    empleado VARCHAR(30),
+    nombreInsumo VARCHAR(100),
+    cantidad INT,
+    precio REAL,
+    total REAL
+)
+UPDATE COMPRA_INSUMOS SET
+    ID_PROVEEDOR = proveedor,
+    ID_EMPLEADO = empleado,
+    NOMBRE_INS = nombreInsumo,
+    CANTIDAD_COM_INS = cantidad,
+    PRECIOC_COM_INS = precio,
+    TOTAL_COM_INS = total
+WHERE ID_COMPRA = id;
+
+-- CONSULTAR COMPRA POR CÓDIGO
+CREATE PROCEDURE SP_ConsultarCod_COM_INS(
+    id VARCHAR(30)
+)
+SELECT * FROM COMPRA_INSUMOS WHERE ID_COMPRA = id;

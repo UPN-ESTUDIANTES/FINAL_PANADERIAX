@@ -83,9 +83,7 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 	private JTable tableVenta;
 	private JComboBox cboCliente;
 	private JTextField txtCodV;
-	private JPanel panel_3;
-	private JLabel lblNewLabel_8;
-	private JTextField txtTotal;
+	private JButton btnSalir;
 
 	/**
 	 * Launch the application.
@@ -132,6 +130,12 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 				btnDesarrolladores.addActionListener(this);
 				btnDesarrolladores.setBounds(10, 405, 142, 29);
 				panel.add(btnDesarrolladores);
+			}
+			{
+				btnSalir = new JButton("SALIR");
+				btnSalir.addActionListener(this);
+				btnSalir.setBounds(10, 365, 142, 29);
+				panel.add(btnSalir);
 			}
 		}
 		{
@@ -245,12 +249,6 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 					cboCliente.setBounds(260, 38, 101, 22);
 					panel_2.add(cboCliente);
 				}
-				{
-					txtTotal = new JTextField();
-					txtTotal.setBounds(335, 103, 86, 20);
-					panel_2.add(txtTotal);
-					txtTotal.setColumns(10);
-				}
 				
 			}	
 			{
@@ -333,16 +331,6 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 						scrollPane.setViewportView(tableCliente);
 					}
 				}
-				{
-					panel_3 = new JPanel();
-					tabbedPane.addTab("VENTA DETALLADA", null, panel_3, null);
-					panel_3.setLayout(null);
-					{
-						lblNewLabel_8 = new JLabel("New label");
-						lblNewLabel_8.setBounds(10, 11, 82, 22);
-						panel_3.add(lblNewLabel_8);
-					}
-				}
 				ListarVD("");
 				ListarCli("");
 			}
@@ -379,6 +367,9 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 	
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnSalir) {
+			do_btnSalir_actionPerformed(e);
+		}
 		if (e.getSource() == btnDesarrolladores) {
 			do_btnDesarrolladores_actionPerformed(e);
 		}
@@ -489,28 +480,50 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 	
 	//PROGRAMAMOS EL BOTÓN REGISTRAR VENTA
 	protected void do_btnIngresar_actionPerformed(ActionEvent e) 
-	{ 
+	{
 		try 
-		{	
-			ArrayVentaDetallada V = new ArrayVentaDetallada();
-			
-			String CodV = txtCodV.getText().trim();	    
-			int cant = Integer.parseInt(txtCantidadV.getText().trim());
-			String pro= cboProducto.getSelectedItem().toString();
-		    String Emple= cboEmple.getSelectedItem().toString();
-		    String cli= cboCliente.getSelectedItem().toString();
-		    LocalDateTime fecha = LocalDateTime.now();
-		    Double precio = Double.parseDouble(txtPrecio.getText().trim());
-		    Double total = Double.parseDouble(txtTotal.getText().trim());
-		    
-			VentaDetallada ven = new VentaDetallada(CodV, Emple, cli, fecha, pro, cant, precio, total);
-			V.Insertar(ven); 
-			ListarVD("");
-			LimpiarV();
-		} catch (Exception e2) {
+	    {	
+	        ArrayVentaDetallada V = new ArrayVentaDetallada();
+	        ArrayProductos prod = new ArrayProductos();  // Necesario para actualizar el stock
 
-			JOptionPane.showMessageDialog(null,"Datos vacios");
-		}
+	        String CodV = txtCodV.getText().trim();	    
+	        int cant = Integer.parseInt(txtCantidadV.getText().trim());
+	        
+	        int index = cboProducto.getSelectedIndex();
+	        String pro = "";
+	        if (index >= 0) {
+	            pro = listaProductos.get(index).getID_PRODUCTO();  // Obtenemos el ID del producto
+	        } else {
+	            JOptionPane.showMessageDialog(null, "⚠️ Selecciona un producto válido.");
+	            return;
+	        }
+
+	        String Emple = cboEmple.getSelectedItem().toString();
+	        String cli = cboCliente.getSelectedItem().toString();
+	        LocalDateTime fecha = LocalDateTime.now();
+	        double precio = Double.parseDouble(txtPrecio.getText().trim());
+	        double total = precio * cant;
+
+	        // Creamos la venta detallada y la insertamos
+	        VentaDetallada ven = new VentaDetallada(CodV, Emple, cli, fecha, pro, cant, precio, total);
+	        V.Insertar(ven); 
+
+	        // Actualizamos el stock en la base de datos
+	        prod.ActualizarStock(pro, -cant);  // Resta el stock
+
+	        // Refrescamos la lista y el combo para que el stock visible se actualice
+	        ArrayProductos P = new ArrayProductos();
+	        listaProductos = P.listarProductos();  
+	        do_cboProducto_actionPerformed(null);  // Esto actualiza txtStockDisponible
+
+	        ListarVD("");  // Recarga la tabla de ventas
+	        LimpiarV();    // Limpia los campos
+
+	    } catch (Exception e2) {
+	        JOptionPane.showMessageDialog(null,"⚠️ Datos vacíos o incorrectos");
+	    }
+		 
+		        
 	}
 	
 	private void LimpiarV() 
@@ -622,5 +635,13 @@ public class Sistema_Empleado extends JFrame implements ActionListener {
 		Programadores p1 = new Programadores();
 		p1.setVisible(true);
 		this.setVisible(false);
+	}
+	
+	protected void do_btnSalir_actionPerformed(ActionEvent e) 
+	{
+		dispose();
+		Login login = new Login();
+        login.setVisible(true);
+        login.setLocationRelativeTo(null); // Centra la ventana
 	}
 }

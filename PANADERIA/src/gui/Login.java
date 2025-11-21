@@ -111,7 +111,8 @@ public class Login extends JFrame implements ActionListener {
 		btnIngresarLogin.setBounds(49, 248, 150, 33);
 		panel_1.add(btnIngresarLogin);
 		
-		JButton btnCerrarSesion = new JButton("CERRAR SESIÓN");
+		btnCerrarSesion = new JButton("CERRAR SESIÓN");
+		btnCerrarSesion.addActionListener(this);
 		btnCerrarSesion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnCerrarSesion.setBounds(49, 292, 150, 33);
 		panel_1.add(btnCerrarSesion);
@@ -122,6 +123,9 @@ public class Login extends JFrame implements ActionListener {
 		}
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnCerrarSesion) {
+			do_btnCerrarSesion_actionPerformed(e);
+		}
 		if (e.getSource() == btnIngresarLogin) {
 			do_btnIngresarLogin_actionPerformed(e);
 		}
@@ -130,6 +134,7 @@ public class Login extends JFrame implements ActionListener {
 	// Variables globales en tu clase (fuera del método, al inicio de la clase)
 	private int intentos = 0;
 	private long tiempoBloqueo = 0;
+	private JButton btnCerrarSesion;
 	
 	protected void do_btnIngresarLogin_actionPerformed(ActionEvent e) {
 	    String usuario    = txtUsuario.getText().trim();
@@ -181,5 +186,20 @@ public class Login extends JFrame implements ActionListener {
 	                "Usuario, contraseña o rol incorrectos. Intento " + intentos + " de 3.");
 	        }
 	    }
+	}
+	
+	//PROGRAMAMOS BOTÓN SALIR
+	protected void do_btnCerrarSesion_actionPerformed(ActionEvent e) 
+	{
+	    int opcion = JOptionPane.showConfirmDialog(
+	            null,
+	            "¿Estás seguro de que deseas salir del programa?",
+	            "Salir",
+	            JOptionPane.YES_NO_OPTION
+	        );
+
+	        if (opcion == JOptionPane.YES_OPTION) {
+	            System.exit(0); // Cierra todo el programa
+	        }
 	}
 }
